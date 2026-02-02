@@ -1,0 +1,51 @@
+multi-client-service-marketplace/
+│
+├── backend/
+│   ├── config/
+│   │   ├── db.js
+│   │   └── env.js
+│   │
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Merchant.js
+│   │   ├── Service.js
+│   │   ├── Order.js
+│   │   └── Review.js
+│   │
+│   ├── routes/
+│   │   ├── auth.routes.js
+│   │   ├── merchant.routes.js
+│   │   ├── service.routes.js
+│   │   ├── order.routes.js
+│   │   └── admin.routes.js
+│   │
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   ├── merchant.controller.js
+│   │   ├── order.controller.js
+│   │   └── payment.controller.js
+│   │
+│   ├── middleware/
+│   │   ├── auth.middleware.js
+│   │   └── role.middleware.js
+│   │
+│   ├── app.js
+│   └── server.js
+│
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   ├── js/
+│   └── assets/
+│
+├── database/
+│   └── schema.sql
+│
+├── docs/
+│   ├── ER_Diagram.png
+│   ├── System_Design.md
+│   └── API_Documentation.md
+│
+├── .env.example
+├── README.md
+└── package.json
