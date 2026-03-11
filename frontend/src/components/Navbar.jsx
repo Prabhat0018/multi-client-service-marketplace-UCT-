@@ -26,7 +26,10 @@ const Navbar = () => {
           {isAuthenticated ? (
             <>
               {isCustomer() && (
-                <Link to="/my-orders">My Orders</Link>
+                <>
+                  <Link to="/my-orders">My Orders</Link>
+                  <Link to="/register" className="text-primary">Become a Merchant</Link>
+                </>
               )}
               {isMerchant() && (
                 <Link to="/merchant/dashboard">Dashboard</Link>

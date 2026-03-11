@@ -71,12 +71,12 @@ const Home = () => {
           ) : (
             <div className="grid grid-4">
               {categories.slice(0, 8).map((category, index) => (
-                <Link to={`/services?category=${category.id}`} key={category.id}>
+                <Link to={`/services?category=${category.category_id}`} key={category.category_id}>
                   <div className="card category-card">
                     <div className="category-icon">
                       {categoryIcons[index % categoryIcons.length]}
                     </div>
-                    <h3>{category.name}</h3>
+                    <h3>{category.category_name}</h3>
                     <p>{category.description || 'Quality services'}</p>
                   </div>
                 </Link>
@@ -104,7 +104,7 @@ const Home = () => {
           ) : (
             <div className="grid grid-4">
               {services.map(service => (
-                <Link to={`/services/${service.id}`} key={service.id}>
+                <Link to={`/services/${service.service_id}`} key={service.service_id}>
                   <div className="card service-card">
                     <div className="card-body">
                       <span className="badge badge-confirmed" style={{ marginBottom: '10px', display: 'inline-block' }}>

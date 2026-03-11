@@ -9,6 +9,15 @@ const {
   cancelOrder
 } = require('../controllers/order.controller');
 
+const {
+  processPayment,
+  getPaymentDetails
+} = require('../controllers/payment.controller');
+
+const {
+  createReview
+} = require('../controllers/review.controller');
+
 /**
  * ============================================
  * 🛒 CUSTOMER ORDER ROUTES
@@ -20,8 +29,9 @@ const {
  * 1. Customer browses services (public routes)
  * 2. Customer logs in
  * 3. Customer creates order for a service
- * 4. Customer tracks order status
- * 5. Customer can cancel pending orders
+ * 4. Customer pays for order
+ * 5. Customer tracks order status
+ * 6. Customer can cancel pending orders
  */
 
 // ============================================
@@ -45,5 +55,17 @@ router.get('/:id', protect, getOrderById);
 // UPDATE - Cancel order
 // PUT /api/orders/:id/cancel
 router.put('/:id/cancel', protect, cancelOrder);
+
+// PAYMENT - Process payment
+// POST /api/orders/:id/pay
+router.post('/:id/pay', protect, processPayment);
+
+// PAYMENT - Get payment details
+// GET /api/orders/:id/payment
+router.get('/:id/payment', protect, getPaymentDetails);
+
+// REVIEW - Create review for order
+// POST /api/orders/:id/review
+router.post('/:id/review', protect, createReview);
 
 module.exports = router;

@@ -98,7 +98,7 @@ const Services = () => {
               >
                 <option value="">All Categories</option>
                 {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  <option key={cat.category_id} value={cat.category_id}>{cat.category_name}</option>
                 ))}
               </select>
               <button type="submit" className="btn btn-primary">Search</button>
@@ -127,7 +127,7 @@ const Services = () => {
             <p className="text-muted mb-2">{services.length} service(s) found</p>
             <div className="grid grid-3">
               {services.map(service => (
-                <Link to={`/services/${service.id}`} key={service.id}>
+                <Link to={`/services/${service.service_id}`} key={service.service_id}>
                   <div className="card service-card">
                     <div className="card-body">
                       <span className="badge badge-confirmed" style={{ marginBottom: '10px', display: 'inline-block' }}>

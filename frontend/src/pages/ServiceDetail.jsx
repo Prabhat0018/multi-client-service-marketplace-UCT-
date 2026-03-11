@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { publicAPI, customerAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import Reviews from '../components/Reviews';
 
 const ServiceDetail = () => {
   const { id } = useParams();
@@ -26,7 +27,7 @@ const ServiceDetail = () => {
       try {
         // Get all services and find the one we need
         const servRes = await publicAPI.getServices();
-        const foundService = (servRes.data.services || []).find(s => s.id === id);
+        const foundService = (servRes.data.services || []).find(s => s.service_id === id);
         
         if (foundService) {
           setService(foundService);
@@ -75,18 +76,18 @@ const ServiceDetail = () => {
     setSuccess('');
 
     try {
-      await customerAPI.createOrder({
-        service_id: service.id,
+      const res = await customerAPI.createOrder({
+        service_id: service.service_id,
         merchant_id: service.merchant_id,
         scheduled_date: bookingData.scheduled_date,
         address: bookingData.address,
         notes: bookingData.notes
       });
 
-      setSuccess('Service booked successfully! Redirecting to your orders...');
-      setTimeout(() => {
-        navigate('/my-orders');
-      }, 2000);
+      // Redirect to checkout page with order details
+      navigate(`/checkout/${res.data.order.order_id}`, {
+        state: { order: res.data.order }
+      });
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to book service');
     } finally {
@@ -183,6 +184,9 @@ const ServiceDetail = () => {
                 </div>
               </div>
             )}
+
+            {/* Reviews Section */}
+            <Reviews serviceId={service.service_id} merchantId={service.merchant_id} />
           </div>
 
           {/* Booking Form */}

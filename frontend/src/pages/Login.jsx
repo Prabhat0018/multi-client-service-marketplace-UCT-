@@ -29,7 +29,7 @@ const Login = () => {
         response = await authAPI.merchantLogin(formData);
       }
 
-      login(response.data.token, response.data.user, userType === 'merchant' ? 'merchant' : 'customer');
+      login(response.data.user, response.data.token);
       
       // Redirect based on user type
       if (userType === 'merchant') {

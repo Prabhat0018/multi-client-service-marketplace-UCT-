@@ -19,6 +19,11 @@ const {
   globalSearch
 } = require('../controllers/merchant.public.controller');
 
+const {
+  getServiceReviews,
+  getMerchantReviews
+} = require('../controllers/review.controller');
+
 /**
  * ============================================
  * 🌐 PUBLIC ROUTES (Customer Marketplace)
@@ -71,5 +76,11 @@ router.get('/services', getAllServices);
 
 // GET /api/services/:id - View service details
 router.get('/services/:id', getPublicServiceById);
+
+// GET /api/services/:id/reviews - View service reviews
+router.get('/services/:id/reviews', getServiceReviews);
+
+// GET /api/merchants/:id/reviews - View merchant reviews
+router.get('/merchants/:id/reviews', getMerchantReviews);
 
 module.exports = router;

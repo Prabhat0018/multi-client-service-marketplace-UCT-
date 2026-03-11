@@ -38,12 +38,12 @@ const Categories = () => {
         ) : (
           <div className="grid grid-4">
             {categories.map((category, index) => (
-              <Link to={`/services?category=${category.id}`} key={category.id}>
+              <Link to={`/services?category=${category.category_id}`} key={category.category_id}>
                 <div className="card category-card">
                   <div className="category-icon">
                     {categoryIcons[index % categoryIcons.length]}
                   </div>
-                  <h3>{category.name}</h3>
+                  <h3>{category.category_name}</h3>
                   <p>{category.description || 'Professional services'}</p>
                 </div>
               </Link>

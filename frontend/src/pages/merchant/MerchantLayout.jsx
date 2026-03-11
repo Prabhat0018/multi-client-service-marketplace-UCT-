@@ -4,13 +4,13 @@ import { merchantAPI } from '../../services/api';
 
 const MerchantLayout = () => {
   const location = useLocation();
-  const [stats, setStats] = useState({ total: 0, pending: 0, completed: 0, revenue: 0 });
+  const [stats, setStats] = useState({ total_orders: 0, pending_orders: 0, completed_orders: 0, total_earnings: 0 });
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const res = await merchantAPI.getOrderStats();
-        setStats(res.data.stats || { total: 0, pending: 0, completed: 0, revenue: 0 });
+        setStats(res.data || { total_orders: 0, pending_orders: 0, completed_orders: 0, total_earnings: 0 });
       } catch (err) {
         console.error('Failed to fetch stats');
       }
@@ -50,19 +50,19 @@ const MerchantLayout = () => {
             <h2 style={{ marginBottom: '25px' }}>Dashboard Overview</h2>
             <div className="stats-grid">
               <div className="stat-card">
-                <div className="stat-value">{stats.total}</div>
+                <div className="stat-value">{stats.total_orders || 0}</div>
                 <div className="stat-label">Total Orders</div>
               </div>
               <div className="stat-card">
-                <div className="stat-value" style={{ color: 'var(--warning)' }}>{stats.pending}</div>
+                <div className="stat-value" style={{ color: 'var(--warning)' }}>{stats.pending_orders || 0}</div>
                 <div className="stat-label">Pending</div>
               </div>
               <div className="stat-card">
-                <div className="stat-value" style={{ color: 'var(--secondary)' }}>{stats.completed}</div>
+                <div className="stat-value" style={{ color: 'var(--secondary)' }}>{stats.completed_orders || 0}</div>
                 <div className="stat-label">Completed</div>
               </div>
               <div className="stat-card">
-                <div className="stat-value">₹{stats.revenue || 0}</div>
+                <div className="stat-value">₹{stats.total_earnings || 0}</div>
                 <div className="stat-label">Total Revenue</div>
               </div>
             </div>

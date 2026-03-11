@@ -54,10 +54,12 @@ export const publicAPI = {
   // Services
   getServices: (params) => API.get('/services', { params }),
   getServiceById: (id) => API.get(`/services/${id}`),
+  getServiceReviews: (id) => API.get(`/services/${id}/reviews`),
   
   // Merchants
   getMerchants: (params) => API.get('/merchants', { params }),
   getMerchantById: (id) => API.get(`/merchants/${id}`),
+  getMerchantReviews: (id) => API.get(`/merchants/${id}/reviews`),
   
   // Search
   search: (query) => API.get(`/search?q=${query}`),
@@ -72,6 +74,13 @@ export const customerAPI = {
   getMyOrders: (status) => API.get('/orders', { params: { status } }),
   getOrderById: (id) => API.get(`/orders/${id}`),
   cancelOrder: (id) => API.put(`/orders/${id}/cancel`),
+  
+  // Payments
+  processPayment: (orderId, data) => API.post(`/orders/${orderId}/pay`, data),
+  
+  // Reviews
+  createReview: (orderId, data) => API.post(`/orders/${orderId}/review`, data),
+  getReviews: (serviceId) => API.get(`/services/${serviceId}/reviews`),
 };
 
 // ============================================

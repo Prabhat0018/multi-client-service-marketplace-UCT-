@@ -9,7 +9,7 @@ const MyOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await customerAPI.getOrders();
+      const res = await customerAPI.getMyOrders();
       setOrders(res.data.orders || []);
     } catch (err) {
       console.error('Failed to fetch orders');
@@ -87,34 +87,34 @@ const MyOrders = () => {
               </thead>
               <tbody>
                 {orders.map(order => (
-                  <tr key={order.id}>
+                  <tr key={order.order_id}>
                     <td>
                       <span style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>
-                        #{order.id.slice(0, 8)}
+                        #{order.order_id?.slice(0, 8)}
                       </span>
                     </td>
                     <td>
                       <strong>{order.service_title || 'Service'}</strong>
                     </td>
-                    <td>{order.merchant_name || '-'}</td>
+                    <td>{order.business_name || '-'}</td>
                     <td>{order.scheduled_date ? formatDate(order.scheduled_date) : '-'}</td>
                     <td style={{ fontWeight: '600' }}>₹{order.total_amount}</td>
                     <td>
-                      <span className={`badge ${getStatusBadge(order.status)}`}>
-                        {order.status.replace('_', ' ')}
+                      <span className={`badge ${getStatusBadge(order.order_status)}`}>
+                        {order.order_status?.replace('_', ' ')}
                       </span>
                     </td>
                     <td>
-                      {order.status === 'pending' && (
+                      {order.order_status === 'pending' && (
                         <button
                           className="btn btn-danger btn-sm"
-                          onClick={() => handleCancelOrder(order.id)}
-                          disabled={cancellingId === order.id}
+                          onClick={() => handleCancelOrder(order.order_id)}
+                          disabled={cancellingId === order.order_id}
                         >
-                          {cancellingId === order.id ? '...' : 'Cancel'}
+                          {cancellingId === order.order_id ? '...' : 'Cancel'}
                         </button>
                       )}
-                      {order.status === 'completed' && (
+                      {order.order_status === 'completed' && (
                         <span className="text-muted" style={{ fontSize: '0.85rem' }}>
                           Completed
                         </span>

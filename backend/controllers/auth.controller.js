@@ -24,7 +24,13 @@ exports.userSignup = async (req, res) => {
 
     res.json({
       message: 'User registered',
-      token: generateToken(user_id, 'customer')
+      token: generateToken(user_id, 'customer'),
+      user: {
+        id: user_id,
+        name,
+        email,
+        role: 'customer'
+      }
     });
 
   } catch (err) {
@@ -49,17 +55,24 @@ exports.merchantSignup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const merchant_id = uuidv4();
 
+    // Auto-approve merchants for now (can add admin approval later)
     await pool.query(
       `INSERT INTO merchants
-       (merchant_id,business_name,email,password,category_id,description)
-       VALUES (?,?,?,?,?,?)`,
+       (merchant_id,business_name,email,password,category_id,description,status)
+       VALUES (?,?,?,?,?,?,?)`,
       [merchant_id, business_name, email,
-       hashedPassword, category_id, description]
+       hashedPassword, category_id, description, 'approved']
     );
 
     res.json({
       message: 'Merchant registered',
-      token: generateToken(merchant_id, 'merchant')
+      token: generateToken(merchant_id, 'merchant'),
+      user: {
+        id: merchant_id,
+        business_name,
+        email,
+        role: 'merchant'
+      }
     });
 
   } catch (err) {
@@ -88,7 +101,13 @@ exports.userLogin = async (req, res) => {
 
     res.json({
       message: 'Login success',
-      token: generateToken(user.user_id, 'customer')
+      token: generateToken(user.user_id, 'customer'),
+      user: {
+        id: user.user_id,
+        name: user.name,
+        email: user.email,
+        role: 'customer'
+      }
     });
 
   } catch (err) {
@@ -117,7 +136,13 @@ exports.merchantLogin = async (req, res) => {
 
     res.json({
       message: 'Login success',
-      token: generateToken(merchant.merchant_id, 'merchant')
+      token: generateToken(merchant.merchant_id, 'merchant'),
+      user: {
+        id: merchant.merchant_id,
+        business_name: merchant.business_name,
+        email: merchant.email,
+        role: 'merchant'
+      }
     });
 
   } catch (err) {

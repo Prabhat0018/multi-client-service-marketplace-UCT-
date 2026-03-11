@@ -4,6 +4,7 @@ import { authAPI, publicAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
+  const { isAuthenticated, isCustomer, isMerchant } = useAuth();
   const [userType, setUserType] = useState('customer');
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
@@ -21,6 +22,20 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  // If customer is logged in, they can only register as merchant
+  const isCustomerLoggedIn = isAuthenticated && isCustomer();
+  // If merchant is already logged in, redirect to dashboard
+  const isMerchantLoggedIn = isAuthenticated && isMerchant();
+
+  useEffect(() => {
+    if (isMerchantLoggedIn) {
+      navigate('/merchant/dashboard');
+    }
+    if (isCustomerLoggedIn) {
+      setUserType('merchant');
+    }
+  }, [isMerchantLoggedIn, isCustomerLoggedIn, navigate]);
 
   useEffect(() => {
     // Fetch categories for merchant registration
@@ -66,7 +81,7 @@ const Register = () => {
         });
       }
 
-      login(response.data.token, response.data.user, userType === 'merchant' ? 'merchant' : 'customer');
+      login(response.data.user, response.data.token);
       
       if (userType === 'merchant') {
         navigate('/merchant/dashboard');
@@ -83,23 +98,25 @@ const Register = () => {
   return (
     <div className="auth-page">
       <div className="auth-card card">
-        <h2>Create Account</h2>
-        <p className="subtitle">Join ServiceHub today</p>
+        <h2>{isCustomerLoggedIn ? 'Become a Merchant' : 'Create Account'}</h2>
+        <p className="subtitle">{isCustomerLoggedIn ? 'Register your business on ServiceHub' : 'Join ServiceHub today'}</p>
 
-        <div className="auth-tabs">
-          <button 
-            className={userType === 'customer' ? 'active' : ''} 
-            onClick={() => setUserType('customer')}
-          >
-            Customer
-          </button>
-          <button 
-            className={userType === 'merchant' ? 'active' : ''} 
-            onClick={() => setUserType('merchant')}
-          >
-            Merchant
-          </button>
-        </div>
+        {!isCustomerLoggedIn && (
+          <div className="auth-tabs">
+            <button 
+              className={userType === 'customer' ? 'active' : ''} 
+              onClick={() => setUserType('customer')}
+            >
+              Customer
+            </button>
+            <button 
+              className={userType === 'merchant' ? 'active' : ''} 
+              onClick={() => setUserType('merchant')}
+            >
+              Merchant
+            </button>
+          </div>
+        )}
 
         {error && <div className="alert alert-error">{error}</div>}
 
@@ -212,7 +229,7 @@ const Register = () => {
                 >
                   <option value="">Select a category</option>
                   {categories.map(cat => (
-                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    <option key={cat.category_id} value={cat.category_id}>{cat.category_name}</option>
                   ))}
                 </select>
               </div>

@@ -16,6 +16,8 @@ import Categories from './pages/Categories';
 
 // Customer Pages
 import MyOrders from './pages/customer/MyOrders';
+import Checkout from './pages/customer/Checkout';
+import PaymentSuccess from './pages/customer/PaymentSuccess';
 
 // Merchant Pages
 import MerchantLayout from './pages/merchant/MerchantLayout';
@@ -54,6 +56,22 @@ function AppRoutes() {
         element={
           <ProtectedRoute allowedRole="customer">
             <MyOrders />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/checkout/:orderId" 
+        element={
+          <ProtectedRoute allowedRole="customer">
+            <Checkout />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/payment-success" 
+        element={
+          <ProtectedRoute allowedRole="customer">
+            <PaymentSuccess />
           </ProtectedRoute>
         } 
       />

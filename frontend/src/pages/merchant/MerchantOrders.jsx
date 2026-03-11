@@ -9,9 +9,7 @@ const MerchantOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const params = {};
-      if (statusFilter) params.status = statusFilter;
-      const res = await merchantAPI.getOrders(params);
+      const res = await merchantAPI.getOrders(statusFilter);
       setOrders(res.data.orders || []);
     } catch (err) {
       console.error('Failed to fetch orders');
@@ -115,10 +113,10 @@ const MerchantOrders = () => {
             </thead>
             <tbody>
               {orders.map(order => (
-                <tr key={order.id}>
+                <tr key={order.order_id}>
                   <td>
                     <span style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>
-                      #{order.id.slice(0, 8)}
+                      #{order.order_id?.slice(0, 8)}
                     </span>
                   </td>
                   <td>
@@ -135,24 +133,24 @@ const MerchantOrders = () => {
                   <td>{order.scheduled_date ? formatDate(order.scheduled_date) : '-'}</td>
                   <td style={{ fontWeight: '600' }}>₹{order.total_amount}</td>
                   <td>
-                    <span className={`badge ${getStatusBadge(order.status)}`}>
-                      {order.status.replace('_', ' ')}
+                    <span className={`badge ${getStatusBadge(order.order_status)}`}>
+                      {order.order_status?.replace('_', ' ')}
                     </span>
                   </td>
                   <td>
-                    {getNextStatus(order.status) && (
+                    {getNextStatus(order.order_status) && (
                       <button
                         className="btn btn-primary btn-sm"
-                        onClick={() => handleStatusUpdate(order.id, getNextStatus(order.status))}
-                        disabled={updatingId === order.id}
+                        onClick={() => handleStatusUpdate(order.order_id, getNextStatus(order.order_status))}
+                        disabled={updatingId === order.order_id}
                       >
-                        {updatingId === order.id ? '...' : getNextStatusLabel(order.status)}
+                        {updatingId === order.order_id ? '...' : getNextStatusLabel(order.order_status)}
                       </button>
                     )}
-                    {order.status === 'completed' && (
+                    {order.order_status === 'completed' && (
                       <span className="text-success" style={{ fontSize: '0.85rem' }}>✓ Done</span>
                     )}
-                    {order.status === 'cancelled' && (
+                    {order.order_status === 'cancelled' && (
                       <span className="text-danger" style={{ fontSize: '0.85rem' }}>Cancelled</span>
                     )}
                   </td>

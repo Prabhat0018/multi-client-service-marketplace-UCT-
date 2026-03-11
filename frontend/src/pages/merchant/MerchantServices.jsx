@@ -18,7 +18,7 @@ const MerchantServices = () => {
 
   const fetchServices = async () => {
     try {
-      const res = await merchantAPI.getServices();
+      const res = await merchantAPI.getMyServices();
       setServices(res.data.services || []);
     } catch (err) {
       console.error('Failed to fetch services');
@@ -66,7 +66,7 @@ const MerchantServices = () => {
 
     try {
       if (editingService) {
-        await merchantAPI.updateService(editingService.id, formData);
+        await merchantAPI.updateService(editingService.service_id, formData);
       } else {
         await merchantAPI.createService(formData);
       }
@@ -112,7 +112,7 @@ const MerchantServices = () => {
       ) : (
         <div className="grid grid-3">
           {services.map(service => (
-            <div className="card" key={service.id}>
+            <div className="card" key={service.service_id}>
               <div className="card-body">
                 <div className="flex flex-between flex-center mb-1">
                   <span className={`badge ${service.is_active !== 0 ? 'badge-completed' : 'badge-cancelled'}`}>
@@ -137,7 +137,7 @@ const MerchantServices = () => {
                   <button className="btn btn-secondary btn-sm" onClick={() => openEditModal(service)}>
                     Edit
                   </button>
-                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(service.id)}>
+                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(service.service_id)}>
                     Delete
                   </button>
                 </div>
